@@ -27,7 +27,7 @@ export class SquareBehavior extends GameObjectBehavior {
 
     }
 
-    protected init()  {
+    protected init() {
         this.createSquare();
     }
    
@@ -47,60 +47,44 @@ export class SquareBehavior extends GameObjectBehavior {
  
     
     
-    private move() {
-        // this.gameObjRef.x = GameApplication.getApp().view.width - this.gameObjRef.width;
+    // this.gameObjRef.x = GameApplication.getApp().view.width - this.gameObjRef.width;
         
-        // this.ballObjRef.x = GameApplication.getApp().view.width - this.gameObjRef.x + this.gameObjRef.width + 40;
+    // this.ballObjRef.x = GameApplication.getApp().view.width - this.gameObjRef.x + this.gameObjRef.width + 40;
         
+    
+
+    private move(delta: number) {
+
     }
-    
-    
-    
-    
  
     public update(delta: number) {
         let wasHit: boolean = false;
-        if (!wasHit && this.ballObjRef.x + this.ballObjRef.width >= this.gameObjRef.x
-            && this.ballObjRef.x < this.gameObjRef.x + this.gameObjRef.width
-            && this.ballObjRef.y + this.ballObjRef.height >= this.gameObjRef.y
-            && this.ballObjRef.y < this.gameObjRef.y + this.gameObjRef.height) {
-            wasHit = true;
-            if (this.gameObjRef.y = GameApplication.getApp().view.height - this.gameObjRef.height) {
-                let gameLoop =  setInterval(() => {
-                    this.gameObjRef.y += this.velocity * delta;
-                    if (this.gameObjRef.y >= GameApplication.getApp().view.height - this.gameObjRef.height)
-                    {
-                        clearInterval(gameLoop);
 
-                    }
-                }, 10)
-             
-              
-            }        
-             
-     EventDispatcher.getInstance().getDispatcher().emit('updatescore');
-            
-            
-            }
-          
-            if (wasHit) {
-                this.move();
-                
-            }
-            
-            
+
+        if (!wasHit && this.ballObjRef.x + this.ballObjRef.width >= this.gameObjRef.x && this.ballObjRef.x < this.gameObjRef.x + this.gameObjRef.width &&
+            this.ballObjRef.y + this.ballObjRef.height >= this.gameObjRef.y && this.ballObjRef.y < this.gameObjRef.y + this.gameObjRef.height) {
+            wasHit = true;
+
+
+            EventDispatcher.getInstance().getDispatcher().emit('updatescore');
+
+        }
+
+
+        if (wasHit) {
+            this.move(delta);
         }
         // this.gameObjRef.width *= 0.9; // this will reduce the width by 90%
         // this.destroy(); // our square is destroyed when the ball intersects with it
  
     }
     
-        // if (this.gameObjRef.x + this.gameObjRef.width + this.velocity * delta < GameApplication.getApp().view.width) {
+    // if (this.gameObjRef.x + this.gameObjRef.width + this.velocity * delta < GameApplication.getApp().view.width) {
                     
-        //     this.gameObjRef.x += this.velocity * delta;
-        // }
-        // else {
-        //     this.gameObjRef.x = GameApplication.getApp().view.width - this.gameObjRef.width;
-        // }
-
+    //     this.gameObjRef.x += this.velocity * delta;
+    // }
+    // else {
+    //     this.gameObjRef.x = GameApplication.getApp().view.width - this.gameObjRef.width;
+    // }
+}
     

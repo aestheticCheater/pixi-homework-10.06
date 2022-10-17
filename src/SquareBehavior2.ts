@@ -46,28 +46,25 @@ export class SquareBehavior2 extends GameObjectBehavior {
         }
 
         public update(delta: number) {
-            let wasHit: boolean = false;
-            if (!wasHit && this.ballObjRef.x + this.ballObjRef.width >= this.gameObjRef.x
-                && this.ballObjRef.x < this.gameObjRef.x + this.gameObjRef.width
-                && this.ballObjRef.y + this.ballObjRef.height >= this.gameObjRef.y
-                && this.ballObjRef.y < this.gameObjRef.y + this.gameObjRef.height) {
-                wasHit = true;
+          
+     
             
-                EventDispatcher.getInstance().getDispatcher().emit('updatescore');
+            
                    
+            let wasHit: boolean = false;
+            this.gameObjRef.y += delta * this.velocity;
+            if (!wasHit && this.gameObjRef.y + this.gameObjRef.height >= GameApplication.getApp().view.height) {
+                this.gameObjRef.y =GameApplication.getApp().view.height -this.gameObjRef.height;
     
-            }
+            }  
+        }
                 // this.gameObjRef.width *= 0.9; // this will reduce the width by 90%
                     // this.destroy(); // our square is destroyed when the ball intersects with it
                 
             
-            if (wasHit) {
-                    this.move();
-                
-            }
+          
             
             
         }
 
 
-}

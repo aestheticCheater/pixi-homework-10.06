@@ -31,14 +31,39 @@ export class Game extends PIXI.Container {
 
 
     private init() {
+        this.createGameObjContainer();
+        // this.createMask();
         this.createTicker();
         this.createGameObjList();
-        this.createGameObjContainer();
         this.createUIContainer();
         this.createButton();
         this.createGameObj();
         this.createScoreView();
     }
+
+    private createMask() {
+        const gfx: PIXI.Graphics = new PIXI.Graphics();
+        gfx.beginFill(0xff0000);
+        gfx.drawRect(0, 0, 400, 400);
+        gfx.endFill();
+
+        const texture1: PIXI.Texture = GameApplication.getApp().renderer.generateTexture(gfx);
+        const square: PIXI.Sprite = new PIXI.Sprite(texture1);
+
+        gfx.clear();
+        gfx.beginFill(0x0000ff);
+        gfx.drawCircle(100, 100, 100);
+        gfx.endFill();
+
+        const texture2: PIXI.Texture = GameApplication.getApp().renderer.generateTexture(gfx);
+        const circle: PIXI.Sprite = new PIXI.Sprite(texture2);
+        square.mask = gfx;
+        this.gameObjectContainer.addChild(square);
+        // this.gameObjectContainer.addChild(circle);
+        // this.gameObjectContainer.mask = circle;
+
+    }
+     
 
     private createScoreView() {
         this.scoreView = new ScoreView(0)
@@ -85,14 +110,13 @@ export class Game extends PIXI.Container {
     }
 
     private createTicker() {
-        const ticker = new PIXI.Ticker();
-        ticker.add(this.update,this);
-        ticker.start();
+        this.ticker = new PIXI.Ticker();
+        this.ticker.add(this.update, this);
+        this.ticker.start();
     }
 
     private createGameObj() {
         this.createBallGameObj();
-        
         this.createSquareGameObj();
     }
     
@@ -108,7 +132,6 @@ export class Game extends PIXI.Container {
         this.addGameObject(ballGameObj);
         
         const ballBehavior: BallBehavior = new BallBehavior(ballGameObj);
-        ballBehavior.setSquareObjRef(this.getGameObjById('gameObj2'));
         ballGameObj.addBehavior('ballBehavior', ballBehavior);
     }
 
@@ -150,11 +173,12 @@ export class Game extends PIXI.Container {
     //     this.gameObjects.push(squareGameObj);
     // }
 
-    private update(delta:number) {
+  private update(delta:number) {
         this.gameObjects.forEach(gameObj => {
             gameObj.update(delta);
         });
     }
+
 
     
 
@@ -190,19 +214,22 @@ export class Game extends PIXI.Container {
     }
  
     private onScoreUpdate() {
-        const gameObj: GameObject = this.getGameObjById('gameObj2')
-        
-           const ballBehavior: BallBehavior = new BallBehavior(gameObj);
-           const squareBehavior: SquareBehavior2 = new SquareBehavior2(gameObj);
-        
-        //    gameObj.removeBehavior('squareBehavior'); 
-        // gameObj.addBehavior('BallBehavior', ballBehavior);
-        gameObj.addBehavior('squareBehavior2', squareBehavior);
         let currentScore: number = Model.getInstance().getScore() + 1;
         Model.getInstance().setScore(currentScore);
         this.scoreView.setScore(Model.getInstance().getScore());
         
 
+        this.getGameObjById('gameObj2').removeBehavior('squareBehavior');
+        this.getGameObjById('gameObj2').addBehavior('ballBehavior', new SquareBehavior2(this.getGameObjById('gameObj2')));
+    // let gameLoop = setInterval(() => {
+    //         gameObj.y += 10;
+            
+    //     }, 100)
+        // if (currentScore == 1) {
+        //     gameObj.y = GameApplication.getApp().view.height - gameObj.height;
+        // }
+       
     }
+ 
 }
 /*The ball hit the red square, the red square become blue and start moving down to the bottom of the screen. And we add score. */

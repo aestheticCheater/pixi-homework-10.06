@@ -8,21 +8,18 @@ export class BallBehavior extends GameObjectBehavior {
     private keyPressed: boolean = false;
     private squareObjRef: GameObject;
 
-    constructor(squareObjRef: GameObject) {
-        super(squareObjRef);
+    constructor(gameObjRef: GameObject) {
+        super(gameObjRef);
     }
 
     
     public destroy() {
         this.ball.destroy({ texture:true, baseTexture:true});
-        this.squareObjRef.removeChild(this.ball); // good practice to remove it after destroy function to be sure
+        this.gameObjRef.removeChild(this.ball); // good practice to remove it after destroy function to be sure
     }
 
 
-    public setSquareObjRef(gameObj: GameObject) {
-        this.squareObjRef = gameObj;
-
-    }
+    
 
     /* All the display type in pixi  have their own destroy function 
       You need to set baseTexture and texture to true in the destroy function, to be sure that the memory will be cleaned.
@@ -53,37 +50,28 @@ export class BallBehavior extends GameObjectBehavior {
         this.gameObjRef.addChild(this.ball);
     }
 
+    public BallRef() {
+        const ballObjRef = this.gameObjRef;
+        return ballObjRef;
+    }
+    
     public update(delta: number) {
 
         if (!this.keyPressed) {
             return;
         }
-         
-
-        if (this.gameObjRef.x + this.gameObjRef.width + this.velocity * delta < GameApplication.getApp().view.width) {
-            
-            if (this.gameObjRef.x  + this.gameObjRef.width < 500 ) {
-                 this.gameObjRef.x += this.velocity * delta;
-                
-            }
-            
-            
-            
-        }
-        else {
-            
-            this.gameObjRef.x = GameApplication.getApp().view.width - this.gameObjRef.width;
-        }
-
-    } 
+        if (this.gameObjRef.x + this.gameObjRef.width + this.velocity * delta < 503) {
+            console.log(this.squareObjRef);
+            this.gameObjRef.x += this.velocity * delta;
+                     
+        } 
+    }
     
-
-    private onKeyUp(e:any) {
+    private onKeyUp(e: KeyboardEvent) {
         if (e.code === 'Space') {
             this.keyPressed = true;
+
+
         }
-     
-        
-        
     }
 }

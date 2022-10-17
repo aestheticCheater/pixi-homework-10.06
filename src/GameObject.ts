@@ -1,5 +1,5 @@
-import { GameObjectBehavior } from './GameObjectBehavior'
 import * as PIXI from 'pixi.js'
+import { GameObjectBehavior } from './GameObjectBehavior'
 
 export class GameObject extends PIXI.Container{
     private id: string;
